@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\Response;
 
 class EventsController extends BaseController
 {
@@ -101,7 +102,9 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 1');
+        return Event::select('*')
+            ->with('workshops')
+            ->get();
     }
 
 
@@ -180,6 +183,9 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
-        throw new \Exception('implement in coding task 2');
+        return Event::select('*')
+            ->with('workshops')
+            ->where('events.id','>',1)
+            ->get();
     }
 }
