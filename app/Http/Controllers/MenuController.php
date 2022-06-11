@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
 use App\Models\MenuItem;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -95,6 +96,18 @@ class MenuController extends BaseController
      */
 
     public function getMenuItems() {
-        throw new \Exception('implement in coding task 3');
+//        SELECT m1.*, m2.*, m3.* FROM
+//        menu_items AS m1 LEFT JOIN menu_items AS m2 ON m2.parent_id = m1.id
+//        LEFT JOIN menu_items AS m3 ON m3.parent_id = m2.id
+//        where m1.parent_id is null;
+
+        return  MenuItem::select('*')
+            ->with(['children' => function($query){
+                $query->select('*')
+                ->with(['children']);
+            }])
+            ->whereNull('parent_id')
+            ->get()->toArray();
+
     }
 }
